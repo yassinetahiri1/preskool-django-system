@@ -1,0 +1,53 @@
+{% extends 'Home/base.html' %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Events</h3>
+                </div>
+                <div class="col-auto">
+                    <a href="{% url 'add_event' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Start</th>
+                                        <th>End</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for event in events %}
+                                    <tr>
+                                        <td>{{ event.title }}</td>
+                                        <td>{{ event.category }}</td>
+                                        <td>{{ event.start_date|date:"d M Y H:i" }}</td>
+                                        <td>{{ event.end_date|date:"d M Y H:i" }}</td>
+                                        <td class="text-right">
+                                            <a href="{% url 'edit_event' event.id %}" class="btn btn-sm bg-success-light"><i class="fas fa-pen"></i></a>
+                                            <a href="{% url 'delete_event' event.id %}" class="btn btn-sm bg-danger-light" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'Holidays',
     'Exam',
     'Admin',
+    'Events',
 ]
 
 MIDDLEWARE = [

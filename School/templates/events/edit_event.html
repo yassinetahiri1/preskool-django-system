@@ -1,0 +1,76 @@
+{% extends 'Home/base.html' %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Edit Event</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'event_list' %}">Events</a></li>
+                        <li class="breadcrumb-item active">Edit Event</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'edit_event' event.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Event Title</label>
+                                        <input type="text" name="title" class="form-control" value="{{ event.title }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Category</label>
+                                        <select name="category" class="form-control" required>
+                                            <option value="Academic" {% if event.category == 'Academic' %}selected{% endif %}>Academic</option>
+                                            <option value="Holiday" {% if event.category == 'Holiday' %}selected{% endif %}>Holiday</option>
+                                            <option value="Sports" {% if event.category == 'Sports' %}selected{% endif %}>Sports</option>
+                                            <option value="Others" {% if event.category == 'Others' %}selected{% endif %}>Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Start Date & Time</label>
+                                        <input type="datetime-local" name="start_date" class="form-control" value="{{ event.start_date|date:'Y-m-d\TH:i' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>End Date & Time</label>
+                                        <input type="datetime-local" name="end_date" class="form-control" value="{{ event.end_date|date:'Y-m-d\TH:i' }}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12">
+                                    <div class="form-group">
+                                        <label>Location</label>
+                                        <input type="text" name="location" class="form-control" value="{{ event.location }}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <textarea name="description" class="form-control" rows="4">{{ event.description }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Update Event</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
