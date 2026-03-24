@@ -1,0 +1,128 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+<div class="content container-fluid">
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-12">
+            <h3 class="page-title">Teacher Details</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'teacher_list' %}">Teachers</a></li>
+               <li class="breadcrumb-item active">Teacher Details</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+
+   <div class="card">
+      <div class="card-body">
+         <div class="row">
+            <div class="col-md-12">
+               <div class="about-info">
+                  <h4>About Me</h4>
+                  <div class="media mt-3">
+                     {% if teacher.teacher_image %}
+                        <img src="{{ teacher.teacher_image.url }}" class="mr-3" alt="Teacher Image" width="80">
+                     {% else %}
+                        <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" class="mr-3" alt="Default" width="80">
+                     {% endif %}
+                     <div class="media-body">
+                        <ul>
+                           <li>
+                              <span class="title-span">Full Name : </span>
+                              <span class="info-span">{{ teacher.first_name }} {{ teacher.last_name }}</span>
+                           </li>
+                           <li>
+                              <span class="title-span">Teacher ID : </span>
+                              <span class="info-span">{{ teacher.id }}</span>
+                           </li>
+                           <li>
+                              <span class="title-span">Gender : </span>
+                              <span class="info-span">{{ teacher.gender }}</span>
+                           </li>
+                           <li>
+                              <span class="title-span">Date of Birth : </span>
+                              <span class="info-span">{{ teacher.date_of_birth }}</span>
+                           </li>
+                           <li>
+                              <span class="title-span">Mobile : </span>
+                              <span class="info-span">{{ teacher.mobile_number }}</span>
+                           </li>
+                           <li>
+                              <span class="title-span">Email : </span>
+                              <span class="info-span">
+                                 <a href="mailto:{{ teacher.email }}">{{ teacher.email }}</a>
+                              </span>
+                           </li>
+                           <li>
+                              <span class="title-span">Status : </span>
+                              <span class="info-span">
+                                 {% if teacher.status == 'Active' %}
+                                    <span class="badge badge-success">Active</span>
+                                 {% else %}
+                                    <span class="badge badge-danger">Inactive</span>
+                                 {% endif %}
+                              </span>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+
+                  <div class="row mt-3">
+                     <div class="col-md-12">
+                        <h5>Professional Information</h5>
+                     </div>
+                     <div class="col-md-6 mt-2">
+                        <p><strong>Subject :</strong> {{ teacher.subject }}</p>
+                        <p><strong>Department :</strong> {{ teacher.department }}</p>
+                        <p><strong>Qualification :</strong> {{ teacher.qualification }}</p>
+                        <p><strong>Experience :</strong> {{ teacher.experience_years }} years</p>
+                        <p><strong>Joining Date :</strong> {{ teacher.joining_date }}</p>
+                     </div>
+                  </div>
+
+                  <div class="row mt-2">
+                     <div class="col-md-12">
+                        <h5>Present Address</h5>
+                        <p>{{ teacher.present_address }}</p>
+                     </div>
+                  </div>
+                  <div class="row mt-2">
+                     <div class="col-md-12">
+                        <h5>Permanent Address</h5>
+                        <p>{{ teacher.permanent_address }}</p>
+                     </div>
+                  </div>
+
+                  <div class="row mt-3">
+                     <div class="col-md-12">
+                        <a href="{% url 'edit_teacher' teacher.id %}" class="btn btn-primary mr-2">
+                           <i class="fas fa-pen"></i> Edit
+                        </a>
+                        <a href="{% url 'teacher_list' %}" class="btn btn-secondary">
+                           <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<footer>
+   <p>Copyright © 2020 Dreamguys.</p>
+</footer>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+{% endblock %}

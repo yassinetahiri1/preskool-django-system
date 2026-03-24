@@ -1,0 +1,175 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+<div class="content container-fluid">
+
+<div class="page-header">
+<div class="row">
+<div class="col-sm-12">
+<h3 class="page-title">Welcome {{ teacher.first_name }}</h3>
+<ul class="breadcrumb">
+<li class="breadcrumb-item"><a href="">Dashboard</a></li>
+<li class="breadcrumb-item active">Teacher Dashboard</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row">
+<div class="col-xl-3 col-sm-6 col-12 d-flex">
+<div class="card bg-nine w-100">
+<div class="card-body">
+<div class="db-widgets d-flex justify-content-between align-items-center">
+<div class="db-icon"><i class="fas fa-book-open"></i></div>
+<div class="db-info">
+<h3>{{ total_subjects }}</h3>
+<h6>My Subjects</h6>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-xl-3 col-sm-6 col-12 d-flex">
+<div class="card bg-six w-100">
+<div class="card-body">
+<div class="db-widgets d-flex justify-content-between align-items-center">
+<div class="db-icon"><i class="fas fa-user-graduate"></i></div>
+<div class="db-info">
+<h3>{{ total_students }}</h3>
+<h6>Total Students</h6>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-xl-3 col-sm-6 col-12 d-flex">
+<div class="card bg-ten w-100">
+<div class="card-body">
+<div class="db-widgets d-flex justify-content-between align-items-center">
+<div class="db-icon"><i class="fas fa-clipboard-list"></i></div>
+<div class="db-info">
+<h3>{{ total_exams }}</h3>
+<h6>Total Exams</h6>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-xl-3 col-sm-6 col-12 d-flex">
+<div class="card bg-eleven w-100">
+<div class="card-body">
+<div class="db-widgets d-flex justify-content-between align-items-center">
+<div class="db-icon"><i class="fas fa-calendar-check"></i></div>
+<div class="db-info">
+<h3>{{ total_holidays }}</h3>
+<h6>Holidays</h6>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Exams Table -->
+<div class="row">
+<div class="col-12">
+<div class="card">
+<div class="card-header">
+<h5 class="card-title">Upcoming Exams</h5>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-hover table-center mb-0">
+<thead>
+<tr>
+<th>Title</th>
+<th>Subject</th>
+<th>Date</th>
+<th>Start</th>
+<th>End</th>
+<th>Class</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+{% for exam in exams %}
+<tr>
+<td>{{ exam.title }}</td>
+<td>{{ exam.subject.name }}</td>
+<td>{{ exam.exam_date|date:"d M Y" }}</td>
+<td>{{ exam.start_time|time:"H:i" }}</td>
+<td>{{ exam.end_time|time:"H:i" }}</td>
+<td>{{ exam.student_class }}</td>
+<td>
+{% if exam.status == 'Scheduled' %}
+<span class="badge badge-primary">Scheduled</span>
+{% elif exam.status == 'Completed' %}
+<span class="badge badge-success">Completed</span>
+{% else %}
+<span class="badge badge-danger">Cancelled</span>
+{% endif %}
+</td>
+</tr>
+{% empty %}
+<tr><td colspan="7" class="text-center">No exams found</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Holidays Table -->
+<div class="row mt-3">
+<div class="col-12">
+<div class="card">
+<div class="card-header">
+<h5 class="card-title">Upcoming Holidays</h5>
+</div>
+<div class="card-body">
+<div class="table-responsive">
+<table class="table table-hover table-center mb-0">
+<thead>
+<tr>
+<th>Title</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+{% for holiday in holidays %}
+<tr>
+<td>{{ holiday.title }}</td>
+<td>{{ holiday.start_date|date:"d M Y" }}</td>
+<td>{{ holiday.end_date|date:"d M Y" }}</td>
+<td>{{ holiday.description }}</td>
+</tr>
+{% empty %}
+<tr><td colspan="4" class="text-center">No holidays found</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<footer><p>Copyright © 2020 Dreamguys.</p></footer>
+</div>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+{% endblock %}
