@@ -4,7 +4,6 @@ from Teacher.models import Teacher
 class Department(models.Model):
     STATUS_CHOICES = [('Active', 'Active'), ('Inactive', 'Inactive')]
 
-    department_id  = models.CharField(max_length=20, unique=True)
     name           = models.CharField(max_length=100)
     description    = models.TextField(blank=True)
 
@@ -14,4 +13,4 @@ class Department(models.Model):
     created_at     = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.name} ({self.department_id})"
+        return f"{self.name} ({self.id})"

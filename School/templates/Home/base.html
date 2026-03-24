@@ -125,10 +125,10 @@
                         <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="{% url 'list' %}">Department List</a></li>
-                           <li><a href="{% url 'Add' %}">Department Add</a></li>
+                           <li><a href="{% url 'AddD' %}">Department Add</a></li>
                            {% if first_departement %}
-                           <li><a href="{% url 'Edit' first_departement.id %}">Department Edit</a></li>
-                           <li><a href="{% url 'Delete' first_departement.id %}">Department Delete</a></li>
+                           <li><a href="{% url 'EditD' first_departement.id %}">Department Edit</a></li>
+                           <li><a href="{% url 'DeleteD' first_departement.id %}">Department Delete</a></li>
                            {% endif %}
                         </ul>
                      </li>
@@ -137,7 +137,9 @@
                         <ul>
                            <li><a href="{% url 'List' %}">Subject List</a></li>
                            <li><a href="{% url 'add_subject' %}">Subject Add</a></li>
-                           <li><a href="{% url 'Edit' first_subject.id %}">Subject Edit</a></li>
+                           {% if first_subject %}
+                           <li><a href="{% url 'EditS' first_subject.id %}">Subject Edit</a></li>
+                           {% endif %}
                         </ul>
                      </li>
                      <li class="menu-title">

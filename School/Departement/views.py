@@ -11,15 +11,25 @@ def list(request):
 def Add(request):
     Teachers = Teacher.objects.all()
     if request.method == 'POST':
-        department_id = request.POST.get('department_id')
         name = request.POST.get('name')
         description = request.POST.get('description')
         status = request.POST.get('status')
+        selected_teachers = request.POST.getlist('teachers') 
 
-        Departments = Department(department_id = department_id , name = name , description = description , status = status)
-        Departments.save()
+        
+        new_dept = Department.objects.create(
+            name=name, 
+            description=description, 
+            status=status
+        )
+        
+        if selected_teachers:
+            new_dept.teachers.set(selected_teachers)
+        
+        messages.success(request, 'Département ajouté avec succès !')
         return redirect('list')
-    return render(request,'Departement/Add.html',{'teachers':Teachers})
+        
+    return render(request, 'Departement/Add.html', {'teachers': Teachers})
 
 def Edit(request,departement_id):
     Departements = get_object_or_404(Department,pk=departement_id)
