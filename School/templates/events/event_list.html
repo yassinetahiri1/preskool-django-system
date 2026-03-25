@@ -7,9 +7,11 @@
                 <div class="col">
                     <h3 class="page-title">Events</h3>
                 </div>
+                {% if user.is_admin or user.is_teacher %}
                 <div class="col-auto">
                     <a href="{% url 'add_event' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
                 </div>
+                {% endif %}
             </div>
         </div>
 
@@ -25,7 +27,9 @@
                                         <th>Category</th>
                                         <th>Start</th>
                                         <th>End</th>
+                                        {% if user.is_admin or user.is_teacher %}
                                         <th class="text-right">Action</th>
+                                        {% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -35,10 +39,12 @@
                                         <td>{{ event.category }}</td>
                                         <td>{{ event.start_date|date:"d M Y H:i" }}</td>
                                         <td>{{ event.end_date|date:"d M Y H:i" }}</td>
+                                        {% if user.is_admin or user.is_teacher %}
                                         <td class="text-right">
                                             <a href="{% url 'edit_event' event.id %}" class="btn btn-sm bg-success-light"><i class="fas fa-pen"></i></a>
                                             <a href="{% url 'delete_event' event.id %}" class="btn btn-sm bg-danger-light" onclick="return confirm('Supprimer ?')"><i class="fas fa-trash"></i></a>
                                         </td>
+                                        {% endif %}
                                     </tr>
                                     {% endfor %}
                                 </tbody>

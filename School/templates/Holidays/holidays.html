@@ -13,9 +13,11 @@
                   <li class="breadcrumb-item active">Holidays</li>
                </ul>
             </div>
+            {% if user.is_admin or user.is_teacher %}
             <div class="col-auto text-right float-right ml-auto">
                <a href="{% url 'Add' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
             </div>
+            {% endif %}
          </div>
       </div>
       <div class="row">
@@ -31,7 +33,9 @@
                               <th>Start Date</th>
                               <th>End Date</th>
                               <th>Description</th>
+                              {% if user.is_admin or user.is_teacher %}
                               <th class="text-right">Action</th>
+                              {% endif %}
                            </tr>
                         </thead>
                         <tbody>
@@ -42,6 +46,7 @@
                               <td>{{ holiday.start_date|date:"d M Y" }}</td>
                               <td>{{ holiday.end_date|date:"d M Y" }}</td>
                               <td>{{ holiday.description }}</td>
+                              {% if user.is_admin or user.is_teacher %}
                               <td class="text-right">
                                  <div class="actions">
                                     <a href="{% url 'Edit' first_holiday.id %}" class="btn btn-sm bg-success-light mr-2">
@@ -50,12 +55,13 @@
                                     <form action="{% url 'Delete' first_holiday.id %}" method="POST" style="display:inline;">
                                        {% csrf_token %}
                                        <button type="submit" class="btn btn-sm bg-danger-light"
-                                          onclick="return confirm('Are you sure?');">
-                                          <i class="fas fa-trash"></i>
+                                       onclick="return confirm('Are you sure?');">
+                                       <i class="fas fa-trash"></i>
                                        </button>
                                     </form>
                                  </div>
                               </td>
+                           {% endif %}
                            </tr>
                            {% endfor %}
                         </tbody>

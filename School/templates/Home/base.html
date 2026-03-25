@@ -90,45 +90,64 @@
                      <li class="submenu active">
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
                         <ul>
-                            
+                           {% if user.is_admin %}
                            <li><a href="{% url 'admin_dashboard' %}" class="active">Admin Dashboard</a></li>
-                           
+                           {% endif %}
+                           {% if user.is_teacher %}
                            <li><a href="{% url 'teacher-dashboard' %}">Teacher Dashboard</a></li>
-                           
+                           {% endif %}
+                           {% if user.is_student %}
                            <li><a href="{% url 'student_dashboard' %}">Student Dashboard</a></li>
-                           
+                           {% endif %}
                         </ul>
                      </li>
+                     
                      <li class="submenu">
                         <a href="{% url 'student_dashboard' %}"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                         <ul>
-                            <li><a href="{% url 'student_list' %}">Student List</a></li>
+                            <li><a href="{% url 'student_list' %}">Student List</a></li>  
                             {% if first_student %}
+                            {% if user.is_student %}
                             <li><a href="{% url 'view_student' first_student.id %}">Student View</a></li>
+                            {% endif %}
+                            {% if user.is_admin or user.is_teacher %}
                             <li><a href="{% url 'edit_student' first_student.id %}">Student Edit</a></li>
                             {% endif %}
+                            {% endif %}
+                            {% if user.is_admin or user.is_teacher %}
                             <li><a href="{% url 'add_student' %}">Student Add</a></li>
+                            {% endif %}
                         </ul>
                      </li>
+                     {% if user.is_admin or user.is_teacher %}
                      <li class="submenu">
                         <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                         <ul>
                             <li><a href="{% url 'teacher_list' %}">Teacher List</a></li>
                             {% if first_teacher %}
+                              {% if user.is_teacher %}
                             <li><a href="{% url 'view_teacher' first_teacher.id %}">Teacher View</a></li>
+                              {% endif %}
+                            {% if user.is_admin %}
                             <li><a href="{% url 'edit_teacher' first_teacher.id %}">Teacher Edit</a></li>
                             {% endif %}
+                            {% endif %}
+                            {% if user.is_admin %}
                             <li><a href="{% url 'add_teacher' %}">Teacher Add</a></li>
+                            {% endif %}
                         </ul>
                      </li>
+                     {% endif %}
                      <li class="submenu">
                         <a href="#"><i class="fas fa-building"></i> <span> Departments</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="{% url 'list' %}">Department List</a></li>
+                           {% if user.is_admin %}
                            <li><a href="{% url 'AddD' %}">Department Add</a></li>
                            {% if first_departement %}
                            <li><a href="{% url 'EditD' first_departement.id %}">Department Edit</a></li>
                            <li><a href="{% url 'DeleteD' first_departement.id %}">Department Delete</a></li>
+                           {% endif %}
                            {% endif %}
                         </ul>
                      </li>
@@ -136,9 +155,11 @@
                         <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="{% url 'List' %}">Subject List</a></li>
+                           {% if user.is_admin or user.is_teacher %}
                            <li><a href="{% url 'add_subject' %}">Subject Add</a></li>
                            {% if first_subject %}
                            <li><a href="{% url 'EditS' first_subject.id %}">Subject Edit</a></li>
+                           {% endif %}
                            {% endif %}
                         </ul>
                      </li>

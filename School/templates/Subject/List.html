@@ -13,9 +13,11 @@
                   <li class="breadcrumb-item active">Subjects</li>
                </ul>
             </div>
+            {% if user.is_admin or user.is_teacher %}
             <div class="col-auto text-right float-right ml-auto">
                <a href="{% url 'add_subject' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
             </div>
+            {% endif %}
          </div>
       </div>
       <div class="row">
@@ -32,7 +34,9 @@
                               <th>Teacher</th>
                               <th>Description</th>
                               <th>Status</th>
+                              {% if user.is_admin or user.is_teacher %}
                               <th class="text-right">Action</th>
+                              {% endif %}
                            </tr>
                         </thead>
                         <tbody>
@@ -56,6 +60,7 @@
                                     <span class="badge badge-danger">Inactive</span>
                                  {% endif %}
                               </td>
+                              {% if user.is_admin or user.is_teacher %}
                               <td class="text-right">
                                  <div class="actions">
                                     <a href="{% url 'EditS' subject.id %}" class="btn btn-sm bg-success-light mr-2">
@@ -70,6 +75,7 @@
                                     </form>
                                  </div>
                               </td>
+                              {% endif %}
                            </tr>
                            {% endfor %}
                         </tbody>

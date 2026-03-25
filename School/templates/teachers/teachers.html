@@ -15,7 +15,9 @@
             </div>
             <div class="col-auto text-right float-right ml-auto">
                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+               {% if user.is_admin %}
                <a href="{% url 'add_teacher' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+               {% endif %}
             </div>
          </div>
       </div>
@@ -34,7 +36,9 @@
                               <th>Mobile</th>
                               <th>Email</th>
                               <th>Status</th>
+                              {% if user.is_admin %}                               
                               <th class="text-right">Action</th>
+                              {% endif %}
                            </tr>
                         </thead>
                         <tbody>
@@ -62,6 +66,7 @@
                                     <span class="badge badge-danger">Inactive</span>
                                  {% endif %}
                               </td>
+                              {% if user.is_admin %}
                               <td class="text-right">
                                  <div class="actions">
                                     <a href="{% url 'edit_teacher' teacher.id %}" class="btn btn-sm bg-success-light mr-2">
@@ -76,6 +81,7 @@
                                     </form>
                                  </div>
                               </td>
+                              {% endif %}
                            </tr>
                            {% endfor %}
                         </tbody>
