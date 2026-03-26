@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'Exam',
     'Admin',
     'Events',
+    'timetable',
 ]
 
 MIDDLEWARE = [

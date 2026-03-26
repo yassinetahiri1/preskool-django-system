@@ -1,0 +1,117 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">School Timetable</h3>
+                </div>
+                {% if user.is_admin or user.is_teacher %}
+                <div class="col-auto">
+                    <a href="{% url 'add_timetable' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Slot</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Time</th>
+                                {% for day in days %}<th>{{ day }}</th>{% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for val, label in hours %}
+                            <tr>
+                                <td class="bg-light font-weight-bold">{{ label }}</td>
+                                {% for day in days %}
+                                <td style="width: 18%; height: 110px; vertical-align: top; background-color: #fcfcfc;">
+                                    {% for slot in schedules %}
+                                        {% if slot.day == day and slot.time_slot == val %}
+                                            <div class="p-2 mb-2 rounded timetable-card text-left">
+                                                <span class="subject-name text-uppercase">{{ slot.subject.name }}</span>
+
+                                                <span class="teacher-name">
+                                                    <i class="fas fa-user-tie mr-1"></i>
+                                                    Prof. {{ slot.teacher.first_name }} {{ slot.teacher.last_name }}
+                                                </span>
+
+                                                <div class="mt-2">
+                                                    <span class="badge badge-pill badge-warning" style="font-size: 10px;">
+                                                        <i class="fas fa-map-marker-alt"></i> {{ slot.room }}
+                                                    </span>
+                                                    {% if user.is_admin %}
+                                                        <a href="{% url 'delete_timetable' slot.id %}" class="text-danger float-right">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+      <p>Copyright © 2020 Dreamguys.</p>
+   </footer>
+</div>
+
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+<style>
+.table thead th {
+    background-color: #3d5ee1 !important; /* PreSkool Blue */
+    color: #ffffff !important;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 15px;
+}
+
+/* Style the Visual Cards */
+.timetable-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e1e1;
+    border-left: 4px solid #3d5ee1; /* Blue strip on the left */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+
+.timetable-card:hover {
+    transform: scale(1.02);
+}
+
+.subject-name {
+    color: #333;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.teacher-name {
+    color: #666;
+    font-size: 0.75rem;
+    display: block;
+}
+</style>
+{% endblock %}

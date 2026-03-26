@@ -29,4 +29,5 @@ urlpatterns = [
     path('Exam/', include('Exam.urls')),
     path('Admin/', include('Admin.urls')),
     path('Event/', include('Events.urls')),
+    path('timetable/', include('timetable.urls')),
 ]
