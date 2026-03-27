@@ -1,9 +1,9 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Teacher
+from student.models import Student
+from Subject.models import Subject
 from Exam.models import Exam
 from Holidays.models import Holiday
 
@@ -95,7 +95,32 @@ def delete_teacher(request, teacher_id):
     messages.success(request, 'Teacher deleted successfully')
     return redirect('teacher_list')
 
+@login_required
 def dashboard(request):
-    exams = Exam.objects.all()
-    holidays = Holiday.objects.all()
-    return render(request,'teachers/teacher-dashboard.html' , {'exams':exams , 'holidays':holidays})
+    teacher = Teacher.objects.filter(email=request.user.email).first()
+
+    if not teacher:
+        teacher = Teacher.objects.first()
+
+    my_subjects = Subject.objects.filter(teacher=teacher)
+    
+    total_subjects = my_subjects.count()
+    total_students = Student.objects.count() 
+    
+    exams_query = Exam.objects.filter(subject__in=my_subjects).order_by('exam_date')
+    total_exams = exams_query.count()
+    
+    holidays = Holiday.objects.all().order_by('start_date')[:5]
+    total_holidays = Holiday.objects.count()
+
+    context = {
+        'teacher': teacher,
+        'total_subjects': total_subjects,
+        'total_students': total_students,
+        'total_exams': total_exams,
+        'total_holidays': total_holidays,
+        'exams': exams_query[:5], # On envoie les 5 prochains examens au tableau
+        'holidays': holidays,
+    }
+    
+    return render(request, 'teachers/teacher-dashboard.html', context)

@@ -18,7 +18,6 @@ def edit_student(request, student_id):
 
     if request.method == "POST":
 
-        # -------- STUDENT --------
         student.first_name = request.POST.get('first_name')
         student.last_name = request.POST.get('last_name')
         student.student_id = request.POST.get('student_id')
@@ -31,13 +30,11 @@ def edit_student(request, student_id):
         student.admission_number = request.POST.get('admission_number')
         student.section = request.POST.get('section')
 
-        # IMAGE (important)
         if request.FILES.get('student_image'):
             student.student_image = request.FILES.get('student_image')
 
         student.save()
 
-        # -------- PARENT --------
         parent.father_name = request.POST.get('father_name')
         parent.father_occupation = request.POST.get('father_occupation')
         parent.father_mobile = request.POST.get('father_mobile')

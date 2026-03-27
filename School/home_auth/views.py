@@ -44,7 +44,7 @@ def login_view(request):
             if user.is_admin:
                 return redirect('admin_dashboard')
             elif user.is_teacher:
-                return redirect('dashboard')
+                return redirect('teacher-dashboard')
             elif user.is_student:
                 return redirect('dashboard')
             else:
