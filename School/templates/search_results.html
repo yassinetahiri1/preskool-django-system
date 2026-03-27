@@ -1,0 +1,154 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Résultats de la recherche</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Recherche</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-sm-12">
+                <div class="search-info">
+                    {% if query %}
+                        <h4>Recherche pour : <span class="text-primary">"{{ query }}"</span></h4>
+                        <p class="text-muted">{{ total_count }} résultat(s) trouvé(s) au total.</p>
+                    {% else %}
+                        <div class="alert alert-warning text-center">
+                            Veuillez saisir un nom ou un identifiant dans la barre de recherche.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if query %}
+        <div class="row">
+            
+            <div class="col-md-12">
+                <div class="card card-table">
+                    <div class="card-header d-flex justify-content-between">
+                        <h4 class="card-title"><i class="fas fa-user-graduate mr-2"></i> Étudiants ({{ students|length }})</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nom Complet</th>
+                                        <th>Classe</th>
+                                        <th class="text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for s in students %}
+                                    <tr>
+                                        <td>{{ s.student_id }}</td>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="{% url 'view_student' s.id %}" class="avatar avatar-sm mr-2">
+                                                    {% if s.student_image %}
+                                                        <img class="avatar-img rounded-circle" src="{{ s.student_image.url }}" alt="">
+                                                    {% else %}
+                                                        <img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="">
+                                                    {% endif %}
+                                                </a>
+                                                <a href="{% url 'view_student' s.id %}">{{ s.first_name }} {{ s.last_name }}</a>
+                                            </h2>
+                                        </td>
+                                        <td>{{ s.student_class }}</td>
+                                        <td class="text-right">
+                                            <a href="{% url 'view_student' s.id %}" class="btn btn-sm btn-outline-primary">
+                                                <i class="far fa-eye"></i> Voir Profil
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">Aucun étudiant ne correspond à cette recherche.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <div class="card card-table">
+                    <div class="card-header">
+                        <h4 class="card-title text-info"><i class="fas fa-chalkboard-teacher mr-2"></i> Professeurs ({{ teachers|length }})</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <tbody>
+                                    {% for t in teachers %}
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="{% url 'view_teacher' t.id %}">{{ t.first_name }} {{ t.last_name }}</a>
+                                            </h2>
+                                        </td>
+                                        <td><span class="badge badge-info">Enseignant</span></td>
+                                        <td class="text-right">
+                                            <a href="{% url 'view_teacher' t.id %}" class="btn btn-sm btn-outline-info">
+                                                <i class="far fa-eye"></i> Voir Profil
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">Aucun professeur trouvé.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <div class="card card-table">
+                    <div class="card-header">
+                        <h4 class="card-title text-success"><i class="fas fa-book mr-2"></i> Matières ({{ subjects|length }})</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row p-3">
+                            {% for sub in subjects %}
+                            <div class="col-md-3 mb-2">
+                                <div class="p-2 border rounded text-center bg-light">
+                                    <strong>{{ sub.name }}</strong><br>
+                                    <small class="text-muted">Code: {{ sub.subject_id }}</small>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="col-12 text-center text-muted">Aucune matière trouvée.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+
+    </div>
+    <footer>
+        <p>Copyright © 2026 Preskool.</p>
+    </footer>
+</div>
+{% endblock %}

@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from home_auth.views import global_search # On importe la vue précise
 from django.contrib import admin
 from django.urls import path , include
 from django.conf import settings
@@ -33,6 +34,7 @@ urlpatterns = [
     path('Event/', include('Events.urls')),
     path('timetable/', include('timetable.urls')),
     path('Library/', include('Library.urls')),
+    path('search/', global_search, name='search_results'), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

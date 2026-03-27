@@ -1,6 +1,8 @@
-from django.shortcuts import render,redirect
-
 # Create your views here.
+from django.db.models import Q
+from student.models import Student
+from Teacher.models import Teacher  
+from Subject.models import Subject
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -60,3 +62,29 @@ def logout_view(request):
     return redirect('index')
 def forgot_password(request):
     return render(request, 'authentication/forgot-password.html')
+
+
+def global_search(request):
+    query = request.GET.get('search')
+    
+    students = []
+    teachers = []
+    subjects = []
+
+    if query:
+        students = Student.objects.filter(
+            Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        )
+        teachers = Teacher.objects.filter(
+            Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        )
+        subjects = Subject.objects.filter(name__icontains=query)
+
+    context = {
+        'query': query,
+        'students': students,
+        'teachers': teachers,
+        'subjects': subjects,
+        'total_results': len(students) + len(teachers) + len(subjects),
+    }
+    return render(request, 'search_results.html', context)
