@@ -1,0 +1,98 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{ subject.name }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'library_home' %}">Library</a></li>
+                        <li class="breadcrumb-item active">{{ subject.name }}</li>
+                    </ul>
+                </div>
+                {% if user.is_admin or user.is_teacher %}
+                <div class="col-auto">
+                    <a href="{% url 'add_document' subject.id %}" class="btn btn-primary">
+                        <i class="fas fa-plus mr-1"></i> Add Document
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% for category in categories %}
+        {% with docs=documents|dictsort:"category" %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {% if category == 'Lesson' %}<i class="fas fa-chalkboard text-primary mr-2"></i>
+                    {% elif category == 'Exercise' %}<i class="fas fa-pencil-alt text-success mr-2"></i>
+                    {% elif category == 'Exam' %}<i class="fas fa-clipboard-list text-danger mr-2"></i>
+                    {% else %}<i class="fas fa-file text-secondary mr-2"></i>{% endif %}
+                    {{ category }}s
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Uploaded</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doc in documents %}
+                            {% if doc.category == category %}
+                            <tr>
+                                <td><i class="fas fa-file-pdf text-danger mr-2"></i>{{ doc.title }}</td>
+                                <td>{{ doc.uploaded_at|date:"d M Y" }}</td>
+                                <td>
+                                    <a href="{{ doc.file.url }}" 
+                                       download 
+                                       class="btn btn-sm btn-success mr-1">
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                    {% if user.is_admin or user.is_teacher %}
+                                    <form action="{% url 'delete_document' doc.id %}" 
+                                          method="POST" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" 
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Delete this document?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% empty %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+
+    </div>
+    <footer>
+      <p>Copyright © 2020 Dreamguys.</p>
+    </footer>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/plugins/datatables/datatables.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+
+{% endblock %}

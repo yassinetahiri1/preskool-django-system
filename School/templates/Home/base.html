@@ -40,9 +40,9 @@
             <ul class="nav user-menu">
                <li class="nav-item dropdown noti-dropdown">
                   <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                   {% comment %} {% if unread_notification_count > 0 %}
+                  {% if unread_notification_count > 0 %}
                   <i class="far fa-bell"></i> <span class="badge badge-pill">{{unread_notification_count}}</span>
-                  {% endif %} {% endcomment %}
+                  {% endif %}
                   </a>
                   <div class="dropdown-menu notifications">
                      <div class="topnav-dropdown-header">
@@ -60,17 +60,38 @@
                   </div>
                </li>
                <li class="nav-item dropdown has-arrow">
-                  <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                  <span class="user-img"><img class="rounded-circle" src="{%static 'assets/img/profiles/avatar-01.jpg'%}" width="31" alt="Ryan Taylor"></span>
-                  </a>
+                   <a href="#" class="dropdown-toggle nav-link d-flex align-items-center" data-toggle="dropdown">
+                       <div class="avatar avatar-sm mr-2" style="width: 35px; height: 35px; min-width: 35px;">
+                           {% if user.profile_pic %}
+                               <img src="{{ user.profile_pic.url }}" alt="User Image" class="avatar-img rounded-circle">
+                           {% else %}
+                               <span class="rounded-circle border border-white d-flex align-items-center justify-content-center" 
+                                     style="background-color: #3d5ee1; color: white; width: 100%; height: 100%; font-size: 14px; font-weight: 600;">
+                                   {% if user.is_admin %}A{% elif user.is_teacher %}T{% elif user.is_student %}S{% else %}U{% endif %}
+                               </span>
+                           {% endif %}
+                       </div>
+                       
+                   </a>
                   <div class="dropdown-menu">
                      <div class="user-header">
                         <div class="avatar avatar-sm">
-                           <img src="{%static 'assets/img/profiles/avatar-01.jpg'%}" alt="User Image" class="avatar-img rounded-circle">
+                            {% if user.profile_pic %}
+                                <img src="{{ user.profile_pic.url }}" alt="User Image" class="avatar-img rounded-circle">
+                            {% else %}
+                                <span class="rounded-circle d-flex align-items-center justify-content-center" 
+                                      style="background-color: #3d5ee1; color: white; width: 100%; height: 100%; font-size: 15px; font-weight: 600; text-transform: uppercase; border: 2px solid white;">
+                                   {% if user.is_admin %}A{% elif user.is_teacher %}T{% elif user.is_student %}S{% else %}U{% endif %}
+                                </span>
+                            {% endif %}
                         </div>
                         <div class="user-text">
-                           {% comment %} <h6>{{user.username}}</h6> {% endcomment %}
-                           <p class="text-muted mb-0">Administrator</p>
+                           <h6>{{user.username}}</h6>
+                           <p class="text-muted mb-0">
+                              {% if user.is_admin %}Administrator{% endif %}
+                              {% if user.is_teacher %}Teacher{% endif %}
+                              {% if user.is_student %}Student{% endif %}
+                           </p>
                         </div>
                      </div>
                      <a class="dropdown-item" href="{% url 'dashboard' %}">My Profile</a>
@@ -193,7 +214,7 @@
                         <a href="{% url 'timetable_list' %}"><i class="fas fa-table"></i> <span>Time Table</span></a>
                      </li>
                      <li>
-                        <a href="library.html"><i class="fas fa-book"></i> <span>Library</span></a>
+                        <a href="{% url 'library_home' %}"><i class="fas fa-book"></i> <span>Library</span></a>
                      </li>
                      <li class="menu-title">
                         <span>Pages</span>

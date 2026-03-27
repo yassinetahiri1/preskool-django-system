@@ -23,10 +23,15 @@
                <div class="about-info">
                   <h4>About Me</h4>
                   <div class="media mt-3">
-                     {% if teacher.teacher_image %}
-                        <img src="{{ teacher.teacher_image.url }}" class="mr-3" alt="Teacher Image" width="80">
+                     {% if user.profile_pic %}
+                         <img src="{{ user.profile_pic.url }}" 
+                              alt="User Image" 
+                              style="width: 280px; height: 280px; object-fit: cover; border-radius: 4px; display: block; background-color: #3d5ee1;">
                      {% else %}
-                        <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" class="mr-3" alt="Default" width="80">
+                         <div class="d-flex align-items-center justify-content-center text-white" 
+                              style="background-color: #3d5ee1; width: 280px; height: 280px; border-radius: 4px; font-size: 80px; font-weight: 700; text-transform: uppercase;">
+                             {% if user.is_admin %}A{% elif user.is_teacher %}T{% elif user.is_student %}S{% else %}U{% endif %}
+                         </div>
                      {% endif %}
                      <div class="media-body">
                         <ul>
