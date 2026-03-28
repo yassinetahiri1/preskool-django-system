@@ -35,6 +35,7 @@ urlpatterns = [
     path('timetable/', include('timetable.urls')),
     path('Library/', include('Library.urls')),
     path('search/', global_search, name='search_results'), 
+    path('Accounts/', include('Accounts.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -18,10 +18,10 @@
       <div class="main-wrapper">
          <div class="header">
             <div class="header-left">
-               <a href="index.html" class="logo">
+               <a href="#" onclick="location.reload(); return false;" class='logo'>
                <img src="{%static 'assets/img/logo.png' %}" alt="Logo">
                </a>
-               <a href="index.html" class="logo logo-small">
+               <a <a href="#" onclick="location.reload(); return false;" class="logo logo-small">
                <img src="{%static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
                </a>
             </div>
@@ -186,22 +186,24 @@
                      <li class="menu-title">
                         <span>Management</span>
                      </li>
+                     {% if user.isadmin %}
                      <li class="submenu">
                         <a href="#"><i class="fas fa-file-invoice-dollar"></i> <span> Accounts</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="fees-collections.html">Fees Collection</a></li>
-                           <li><a href="expenses.html">Expenses</a></li>
-                           <li><a href="salary.html">Salary</a></li>
-                           <li><a href="add-fees-collection.html">Add Fees</a></li>
-                           <li><a href="add-expenses.html">Add Expenses</a></li>
-                           <li><a href="add-salary.html">Add Salary</a></li>
+                           <li><a href="/Accounts/fees/">Fees Collection</a></li>
+                           <li><a href="/Accounts/expenses/">Expenses</a></li>
+                           <li><a href="/Accounts/salary/">Salary</a></li>
+                           <li><a href="/Accounts/fees/add/">Add Fees</a></li>
+                           <li><a href="/Accounts/expenses/add/">Add Expenses</a></li>
+                           <li><a href="/Accounts/salary/add/">Add Salary</a></li>
                         </ul>
                      </li>
+                     {% endif %}
                      <li>
                         <a href="{% url 'Holidays' %}"><i class="fas fa-holly-berry"></i> <span>Holiday</span></a>
                      </li>
                      <li>
-                        <a href="fees.html"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
+                        <a href="/Accounts/fees/"><i class="fas fa-comment-dollar"></i> <span>Fees</span></a>
                      </li>
                      <li>
                         <a href="{% url 'exam_list' %}"><i class="fas fa-clipboard-list"></i> <span>Exam list</span></a>

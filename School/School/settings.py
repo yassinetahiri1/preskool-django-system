@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'Events',
     'timetable',
     'Library',
+    'Accounts'
 ]
 
 MIDDLEWARE = [

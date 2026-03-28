@@ -57,13 +57,6 @@
                                         <td>{{ s.student_id }}</td>
                                         <td>
                                             <h2 class="table-avatar">
-                                                <a href="{% url 'view_student' s.id %}" class="avatar avatar-sm mr-2">
-                                                    {% if s.student_image %}
-                                                        <img class="avatar-img rounded-circle" src="{{ s.student_image.url }}" alt="">
-                                                    {% else %}
-                                                        <img class="avatar-img rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="">
-                                                    {% endif %}
-                                                </a>
                                                 <a href="{% url 'view_student' s.id %}">{{ s.first_name }} {{ s.last_name }}</a>
                                             </h2>
                                         </td>
