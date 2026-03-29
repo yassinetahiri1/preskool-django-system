@@ -93,7 +93,7 @@
                                </p>
                            </div>
                        </div>
-                       <a class="dropdown-item" href="{% url 'dashboard' %}">My Profile</a>
+                       <a class="dropdown-item" {% if user.is_admin %} href="{% url 'admin_dashboard' %}" {% elif user.is_teacher %} href="{% url 'teacher-dashboard' %}" {% elif user.is_student %} href="{% url 'student_dashboard' %}" {% endif %}>My Profile</a>
                        <a class="dropdown-item" href="#">Inbox</a>
                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                    </div>
@@ -166,7 +166,6 @@
                            <li><a href="{% url 'AddD' %}">Department Add</a></li>
                            {% if first_departement %}
                            <li><a href="{% url 'EditD' first_departement.id %}">Department Edit</a></li>
-                           <li><a href="{% url 'DeleteD' first_departement.id %}">Department Delete</a></li>
                            {% endif %}
                            {% endif %}
                         </ul>
@@ -212,7 +211,7 @@
                         <a href="{% url 'event_list' %}"><i class="fas fa-calendar-day"></i> <span>Events</span></a>
                      </li>
                      <li>
-                        <a href="{% url 'timetable_list' %}"><i class="fas fa-table"></i> <span>Time Table</span></a>
+                        <a href="{% url 'timetable_home' %}"><i class="fas fa-table"></i> <span>Time Table</span></a>
                      </li>
                      <li>
                         <a href="{% url 'library_home' %}"><i class="fas fa-book"></i> <span>Library</span></a>

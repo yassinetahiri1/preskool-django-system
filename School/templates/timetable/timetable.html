@@ -6,15 +6,79 @@
         <div class="page-header">
             <div class="row align-items-center">
                 <div class="col">
-                    <h3 class="page-title">School Timetable</h3>
+                    <h3 class="page-title">{{ ct.class_name }} — Section {{ ct.section }}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'timetable_home' %}">Time Table</a></li>
+                        <li class="breadcrumb-item active">{{ ct.class_name }}</li>
+                    </ul>
                 </div>
-                {% if user.is_admin or user.is_teacher %}
-                <div class="col-auto">
-                    <a href="{% url 'add_timetable' %}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Slot</a>
-                </div>
-                {% endif %}
             </div>
         </div>
+
+        {% if user.is_admin or user.is_teacher %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header"><h5 class="mb-0"><i class="fas fa-plus mr-2"></i>Add a Slot</h5></div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'add_slot' ct.pk %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <select name="subject" class="form-control" required>
+                                    {% for s in subjects %}
+                                    <option value="{{ s.id }}">{{ s.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Teacher</label>
+                                <select name="teacher" class="form-control" required>
+                                    {% for t in teachers %}
+                                    <option value="{{ t.id }}">{{ t.first_name }} {{ t.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Room</label>
+                                <input type="text" name="room" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Day</label>
+                                <select name="day" class="form-control" required>
+                                    {% for day in days %}
+                                    <option value="{{ day }}">{{ day }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group">
+                                <label>Time Slot</label>
+                                <select name="time_slot" class="form-control" required>
+                                    {% for val, label in hours %}
+                                    <option value="{{ val }}">{{ label }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary mb-3 w-100">
+                                <i class="fas fa-save mr-1"></i> Add Slot
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
 
         <div class="card shadow-sm">
             <div class="card-body">
@@ -31,29 +95,31 @@
                             <tr>
                                 <td class="bg-light font-weight-bold">{{ label }}</td>
                                 {% for day in days %}
-                                <td style="width: 18%; height: 110px; vertical-align: top; background-color: #fcfcfc;">
-                                    {% for slot in schedules %}
-                                        {% if slot.day == day and slot.time_slot == val %}
-                                            <div class="p-2 mb-2 rounded timetable-card text-left">
-                                                <span class="subject-name text-uppercase">{{ slot.subject.name }}</span>
-
-                                                <span class="teacher-name">
-                                                    <i class="fas fa-user-tie mr-1"></i>
-                                                    Prof. {{ slot.teacher.first_name }} {{ slot.teacher.last_name }}
-                                                </span>
-
-                                                <div class="mt-2">
-                                                    <span class="badge badge-pill badge-warning" style="font-size: 10px;">
-                                                        <i class="fas fa-map-marker-alt"></i> {{ slot.room }}
-                                                    </span>
-                                                    {% if user.is_admin %}
-                                                        <a href="{% url 'delete_timetable' slot.id %}" class="text-danger float-right">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        {% endif %}
+                                <td style="width:18%; height:110px; vertical-align:top; background-color:#fcfcfc;">
+                                    {% for slot in slots %}
+                                    {% if slot.day == day and slot.time_slot == val %}
+                                    <div class="p-2 mb-2 rounded timetable-card text-left">
+                                        <span class="subject-name text-uppercase">{{ slot.subject.name }}</span>
+                                        <span class="teacher-name">
+                                            <i class="fas fa-user-tie mr-1"></i>
+                                            Prof. {{ slot.teacher.first_name }} {{ slot.teacher.last_name }}
+                                        </span>
+                                        <div class="mt-2">
+                                            <span class="badge badge-pill badge-warning" style="font-size:10px;">
+                                                <i class="fas fa-map-marker-alt"></i> {{ slot.room }}
+                                            </span>
+                                            {% if user.is_admin or user.is_teacher %}
+                                            <form action="{% url 'delete_slot' slot.pk %}" method="POST" style="display:inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-link text-danger p-0 float-right"
+                                                    onclick="return confirm('Delete this slot?')" style="font-size:12px;">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endif %}
                                     {% endfor %}
                                 </td>
                                 {% endfor %}
@@ -64,54 +130,35 @@
                 </div>
             </div>
         </div>
-    </div>
-    <footer>
-      <p>Copyright © 2020 Dreamguys.</p>
-   </footer>
-</div>
 
+    </div>
+    <footer><p>Copyright © 2020 Dreamguys.</p></footer>
+</div>
 
 <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'assets/js/popper.min.js' %}"></script>
 <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
-<script src="{% static 'assets/plugins/datatables/datatables.min.js' %}"></script>
 <script src="{% static 'assets/js/script.js' %}"></script>
 
 <style>
 .table thead th {
-    background-color: #3d5ee1 !important; /* PreSkool Blue */
-    color: #ffffff !important;
+    background-color: #3d5ee1 !important;
+    color: #fff !important;
     text-transform: uppercase;
     font-size: 13px;
     font-weight: 600;
     padding: 15px;
 }
-
-/* Style the Visual Cards */
 .timetable-card {
-    background-color: #ffffff;
+    background-color: #fff;
     border: 1px solid #e1e1e1;
-    border-left: 4px solid #3d5ee1; /* Blue strip on the left */
+    border-left: 4px solid #3d5ee1;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     transition: transform 0.2s;
 }
-
-.timetable-card:hover {
-    transform: scale(1.02);
-}
-
-.subject-name {
-    color: #333;
-    font-weight: 700;
-    display: block;
-    margin-bottom: 2px;
-}
-
-.teacher-name {
-    color: #666;
-    font-size: 0.75rem;
-    display: block;
-}
+.timetable-card:hover { transform: scale(1.02); }
+.subject-name { color: #333; font-weight: 700; display: block; margin-bottom: 2px; }
+.teacher-name { color: #666; font-size: 0.75rem; display: block; }
 </style>
 {% endblock %}

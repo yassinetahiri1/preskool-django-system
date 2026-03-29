@@ -1,0 +1,70 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Time Table</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Time Table</li>
+                    </ul>
+                </div>
+                {% if user.is_admin or user.is_teacher %}
+                <div class="col-auto">
+                    <a href="{% url 'create_class_timetable' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Create Timetable
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            {% for ct in classes %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-table fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title font-weight-bold">{{ ct.class_name }}</h5>
+                        <p class="text-muted">Section {{ ct.section }}</p>
+                        <a href="{% url 'timetable_detail' ct.pk %}" class="btn btn-primary btn-sm mr-1">
+                            <i class="fas fa-eye mr-1"></i> View
+                        </a>
+                        {% if user.is_admin %}
+                        <form action="{% url 'delete_class_timetable' ct.pk %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete this entire timetable?')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-table fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No timetables yet.</p>
+                {% if user.is_admin or user.is_teacher %}
+                <a href="{% url 'create_class_timetable' %}" class="btn btn-primary">
+                    <i class="fas fa-plus mr-1"></i> Create First Timetable
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <footer><p>Copyright © 2020 Dreamguys.</p></footer>
+</div>
+
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+<script src="{% static 'assets/js/script.js' %}"></script>
+{% endblock %}

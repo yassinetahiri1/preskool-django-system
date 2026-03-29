@@ -1,0 +1,47 @@
+{% extends 'Home/base.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Create Timetable</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'timetable_home' %}">Time Table</a></li>
+                        <li class="breadcrumb-item active">Create</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'create_class_timetable' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Class Name</label>
+                                <input type="text" name="class_name" class="form-control"
+                                       placeholder="e.g. 1A, 2B, Terminale S" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Section</label>
+                                <input type="text" name="section" class="form-control"
+                                       placeholder="e.g. A, B, C" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus mr-1"></i> Create
+                            </button>
+                            <a href="{% url 'timetable_home' %}" class="btn btn-secondary ml-2">Cancel</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
